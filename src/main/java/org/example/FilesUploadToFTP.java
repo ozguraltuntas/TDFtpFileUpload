@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -23,10 +22,11 @@ public class FilesUploadToFTP {
         int port = 21;
         String user = "techdata";
         String pass = "Moontech@1";
-        Date date = new Date();
-
+        logger.info("    FTPUpload starting ...    ");
 
         FTPClient ftpClient = new FTPClient();
+        logger.info("    FTPClient ftpClient = new FTPClient();    ");
+
         try {
             ftpClient.connect(server, port);
             ftpClient.login(user, pass);
@@ -36,14 +36,12 @@ public class FilesUploadToFTP {
             // APPROACH #1: uploads first file using an InputStream
             File firstLocalFile = new File(firstRemoteFilePath);
             InputStream inputStream = new FileInputStream(firstLocalFile);
-            System.out.println("Start uploading files");
             logger.info("    Start uploading files...    ");
 
             boolean done = ftpClient.storeFile(firstRemoteFile, inputStream);
             inputStream.close();
             if (done) {
                 logger.info("The file " + firstRemoteFile + " is uploaded successfully");
-                System.out.println("The file " + firstRemoteFile + " is uploaded successfully at " + date.toString());
             }
         } catch (IOException ex) {
             logger.error("This is error message..." + ex.getMessage());
